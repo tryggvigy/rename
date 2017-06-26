@@ -1,9 +1,12 @@
 {
+  "name": "rename",
+  "version": "0.0.1",
   "scripts": {
     "bs": "bsb -make-world",
     "webpack": "webpack",
     "bs:watch": "bsb -make-world -w",
-    "webpack:watch": "webpack -w"
+    "webpack:watch": "webpack -w",
+    "test": "ocamlfind ocamlc -g -thread -package ounit -pp refmt -linkpkg -o test.native -impl src/test.re"
   },
   "dependencies": {
     "bs-platform": "^1.7.4",
