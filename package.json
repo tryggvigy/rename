@@ -6,10 +6,13 @@
     "webpack": "webpack",
     "bs:watch": "bsb -make-world -w",
     "webpack:watch": "webpack -w",
-    "test": "ocamlfind ocamlc -g -thread -package ounit -pp refmt -linkpkg -o test.native -impl src/test.re"
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "bs-platform": "^1.7.4",
     "webpack": "^2.6.1"
+  },
+  "devDependencies": {
+    "bs-jest": "0.1.0"
   }
 }

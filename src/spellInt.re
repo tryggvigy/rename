@@ -1,8 +1,6 @@
-module IntMap =
-  Map.Make {
-    type t = int;
-    let compare = compare;
-  };
+open IntMap;
+
+exception UnspellableNumber string;
 
 let spellingsByNumber =
   IntMap.(
@@ -34,30 +32,27 @@ let spellingsByNumber =
 
 let spellInt (number: int) => {
   let signSpelling = number < 0 ? "negative " : "";
-  let rec buildSpelling (number: int) =>
+  let rec buildNumberSpelling (number: int) =>
     try (IntMap.find number spellingsByNumber) {
     | Not_found =>
       switch number {
       | number when number < 100 =>
         let rest = number mod 10;
-        buildSpelling (number - rest) ^ " " ^ (rest === 0 ? "" : buildSpelling rest)
+        buildNumberSpelling (number - rest) ^ " " ^ (rest === 0 ? "" : buildNumberSpelling rest)
       | number when number < 1000 =>
         let rest = number mod 100;
-        buildSpelling ((number - rest) / 100) ^
-        " hundered" ^ (rest === 0 ? "" : " and " ^ buildSpelling rest)
+        buildNumberSpelling ((number - rest) / 100) ^
+        " hundered" ^ (rest === 0 ? "" : " and " ^ buildNumberSpelling rest)
       | number when number < 1000000 =>
         let rest = number mod 1000;
-        buildSpelling ((number - rest) / 1000) ^
-        " thousand" ^ (rest === 0 ? "" : ", " ^ buildSpelling rest)
+        buildNumberSpelling ((number - rest) / 1000) ^
+        " thousand" ^ (rest === 0 ? "" : ", " ^ buildNumberSpelling rest)
       | number when number >= 1000000 =>
         let rest = number mod 1000000;
-        buildSpelling ((number - rest) / 1000000) ^
-        " million" ^ (rest === 0 ? "" : ", " ^ buildSpelling rest)
-      | _ => "NIL"
+        buildNumberSpelling ((number - rest) / 1000000) ^
+        " million" ^ (rest === 0 ? "" : ", " ^ buildNumberSpelling rest)
+      | _ => raise (UnspellableNumber (Printf.sprintf "Unable to spell %d" number))
       }
     };
-  switch (buildSpelling (abs number)) {
-  | "NIL" => None
-  | numberSpelling => Some (signSpelling ^ numberSpelling)
-  }
+  signSpelling ^ buildNumberSpelling (abs number)
 };
