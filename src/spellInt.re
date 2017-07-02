@@ -30,9 +30,9 @@ let spellingsByNumber =
     add 90 "ninety"
   );
 
-let spellInt (number: int) => {
+let spellInt number => {
   let signSpelling = number < 0 ? "negative " : "";
-  let rec buildNumberSpelling (number: int) =>
+  let rec buildNumberSpelling number =>
     try (IntMap.find number spellingsByNumber) {
     | Not_found =>
       switch number {
